@@ -9,3 +9,16 @@ install_manifest.txt
 compile_commands.json
 CTestTestfile.cmake
 _deps
+CMakeLists.txt
+cmake-build-debug/second_project.cbp
+cmake-build-debug/.cmake/api/v1/reply/toolchains-v1-2120af67d5621e174487.json
+cmake-build-debug/.cmake/api/v1/reply/target-second_project-Debug-ccf9416b7d09c1d0f284.json
+cmake-build-debug/.cmake/api/v1/reply/index-2022-05-17T13-44-07-0626.json
+cmake-build-debug/.cmake/api/v1/reply/directory-.-Debug-d0094a50bb2071803777.json
+cmake-build-debug/.cmake/api/v1/reply/codemodel-v2-60876b38178bc8cb90e4.json
+cmake-build-debug/.cmake/api/v1/reply/cmakeFiles-v1-67b7aa7fed0e6c4dddd2.json
+cmake-build-debug/.cmake/api/v1/reply/cache-v2-0a3522eb76d894a06d9f.json
+cmake-build-debug/.cmake/api/v1/query/toolchains-v1
+cmake-build-debug/.cmake/api/v1/query/codemodel-v2
+cmake-build-debug/.cmake/api/v1/query/cmakeFiles-v1
+cmake-build-debug/.cmake/api/v1/query/cache-v2
