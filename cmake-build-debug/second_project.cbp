@@ -86,6 +86,18 @@
 		<Unit filename="/Users/viniciuscorrea/Desktop/university/DA/DA2/Database.h">
 			<Option target="second_project"/>
 		</Unit>
+		<Unit filename="/Users/viniciuscorrea/Desktop/university/DA/DA2/Network.cpp">
+			<Option target="second_project"/>
+		</Unit>
+		<Unit filename="/Users/viniciuscorrea/Desktop/university/DA/DA2/Network.h">
+			<Option target="second_project"/>
+		</Unit>
+		<Unit filename="/Users/viniciuscorrea/Desktop/university/DA/DA2/Vehicle.cpp">
+			<Option target="second_project"/>
+		</Unit>
+		<Unit filename="/Users/viniciuscorrea/Desktop/university/DA/DA2/Vehicle.h">
+			<Option target="second_project"/>
+		</Unit>
 		<Unit filename="/Users/viniciuscorrea/Desktop/university/DA/DA2/main.cpp">
 			<Option target="second_project"/>
 		</Unit>

@@ -1,6 +1,8 @@
 #include <iostream>
+#include "Database.h"
 
 int main() {
-    std::cout << "Hello, World!" << std::endl;
+    Database d1;
+    d1.readNetwork(3);
     return 0;
 }

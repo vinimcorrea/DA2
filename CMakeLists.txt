@@ -3,4 +3,4 @@ project(second_project)
 
 set(CMAKE_CXX_STANDARD 14)
 
-add_executable(second_project main.cpp Database.cpp)
+add_executable(second_project main.cpp Database.cpp Vehicle.cpp Network.cpp)
