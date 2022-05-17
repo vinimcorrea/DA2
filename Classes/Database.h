@@ -5,8 +5,14 @@
 #ifndef SECOND_PROJECT_DATABASE_H
 #define SECOND_PROJECT_DATABASE_H
 
+#include <vector>
+#include "StopEdge.h"
+
+using namespace std;
+
 
 class Database {
+    vector<Stop>
 
 };
 

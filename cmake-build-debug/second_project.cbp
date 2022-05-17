@@ -92,22 +92,16 @@
 		<Unit filename="C:/Users/igcbs/Desktop/College/UPorto 2020-/Semestre 4/DA/DA2/Classes/Database.h">
 			<Option target="second_project"/>
 		</Unit>
-		<Unit filename="C:/Users/igcbs/Desktop/College/UPorto 2020-/Semestre 4/DA/DA2/Classes/Place.cpp">
+		<Unit filename="C:/Users/igcbs/Desktop/College/UPorto 2020-/Semestre 4/DA/DA2/Classes/Graph.cpp">
 			<Option target="second_project"/>
 		</Unit>
-		<Unit filename="C:/Users/igcbs/Desktop/College/UPorto 2020-/Semestre 4/DA/DA2/Classes/Place.h">
+		<Unit filename="C:/Users/igcbs/Desktop/College/UPorto 2020-/Semestre 4/DA/DA2/Classes/Graph.h">
 			<Option target="second_project"/>
 		</Unit>
-		<Unit filename="C:/Users/igcbs/Desktop/College/UPorto 2020-/Semestre 4/DA/DA2/Classes/Trip.cpp">
+		<Unit filename="C:/Users/igcbs/Desktop/College/UPorto 2020-/Semestre 4/DA/DA2/Classes/StopEdge.cpp">
 			<Option target="second_project"/>
 		</Unit>
-		<Unit filename="C:/Users/igcbs/Desktop/College/UPorto 2020-/Semestre 4/DA/DA2/Classes/Trip.h">
-			<Option target="second_project"/>
-		</Unit>
-		<Unit filename="C:/Users/igcbs/Desktop/College/UPorto 2020-/Semestre 4/DA/DA2/Classes/Vehicle.cpp">
-			<Option target="second_project"/>
-		</Unit>
-		<Unit filename="C:/Users/igcbs/Desktop/College/UPorto 2020-/Semestre 4/DA/DA2/Classes/Vehicle.h">
+		<Unit filename="C:/Users/igcbs/Desktop/College/UPorto 2020-/Semestre 4/DA/DA2/Classes/StopEdge.h">
 			<Option target="second_project"/>
 		</Unit>
 		<Unit filename="C:/Users/igcbs/Desktop/College/UPorto 2020-/Semestre 4/DA/DA2/main.cpp">
