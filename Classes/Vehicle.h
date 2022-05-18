@@ -12,7 +12,6 @@ class Vehicle {
     int capacity;
     int time;
 
-
 public:
     Vehicle(int departure, int arrival, int capacity, int time);
 

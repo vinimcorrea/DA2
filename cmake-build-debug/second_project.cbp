@@ -80,22 +80,40 @@
 				</MakeCommands>
 			</Target>
 		</Build>
-		<Unit filename="/Users/viniciuscorrea/Desktop/university/DA/DA2/Database.cpp">
+		<Unit filename="/Users/viniciuscorrea/Desktop/university/DA/DA2/Classes/Algorithm.cpp">
 			<Option target="second_project"/>
 		</Unit>
-		<Unit filename="/Users/viniciuscorrea/Desktop/university/DA/DA2/Database.h">
+		<Unit filename="/Users/viniciuscorrea/Desktop/university/DA/DA2/Classes/Algorithm.h">
 			<Option target="second_project"/>
 		</Unit>
-		<Unit filename="/Users/viniciuscorrea/Desktop/university/DA/DA2/Network.cpp">
+		<Unit filename="/Users/viniciuscorrea/Desktop/university/DA/DA2/Classes/Database.cpp">
 			<Option target="second_project"/>
 		</Unit>
-		<Unit filename="/Users/viniciuscorrea/Desktop/university/DA/DA2/Network.h">
+		<Unit filename="/Users/viniciuscorrea/Desktop/university/DA/DA2/Classes/Database.h">
 			<Option target="second_project"/>
 		</Unit>
-		<Unit filename="/Users/viniciuscorrea/Desktop/university/DA/DA2/Vehicle.cpp">
+		<Unit filename="/Users/viniciuscorrea/Desktop/university/DA/DA2/Classes/Graph.cpp">
 			<Option target="second_project"/>
 		</Unit>
-		<Unit filename="/Users/viniciuscorrea/Desktop/university/DA/DA2/Vehicle.h">
+		<Unit filename="/Users/viniciuscorrea/Desktop/university/DA/DA2/Classes/Graph.h">
+			<Option target="second_project"/>
+		</Unit>
+		<Unit filename="/Users/viniciuscorrea/Desktop/university/DA/DA2/Classes/Network.cpp">
+			<Option target="second_project"/>
+		</Unit>
+		<Unit filename="/Users/viniciuscorrea/Desktop/university/DA/DA2/Classes/Network.h">
+			<Option target="second_project"/>
+		</Unit>
+		<Unit filename="/Users/viniciuscorrea/Desktop/university/DA/DA2/Classes/StopEdge.cpp">
+			<Option target="second_project"/>
+		</Unit>
+		<Unit filename="/Users/viniciuscorrea/Desktop/university/DA/DA2/Classes/StopEdge.h">
+			<Option target="second_project"/>
+		</Unit>
+		<Unit filename="/Users/viniciuscorrea/Desktop/university/DA/DA2/Classes/Vehicle.cpp">
+			<Option target="second_project"/>
+		</Unit>
+		<Unit filename="/Users/viniciuscorrea/Desktop/university/DA/DA2/Classes/Vehicle.h">
 			<Option target="second_project"/>
 		</Unit>
 		<Unit filename="/Users/viniciuscorrea/Desktop/university/DA/DA2/main.cpp">
