@@ -1,123 +1,109 @@
 //
 // Created by 35196 on 24/01/2022.
 //
-
+#include <iostream>
+#include <fstream>
+#include <string>
+#include <queue>
 
 #include "Graph.h"
 
-Graph::Graph() {
-    this->n=0;
-    stops={};
-}
-// Constructor: nr nodes and direction (default: undirected)
-Graph::Graph(int num, bool dir) : n(num), hasDir(dir){
-    stops.push_back(Stop());
+using namespace std;
+
+#define TESTS_FOLDER "Tests/"
+
+
+string filename(int i){
+    if(i > 10 || i < 1)
+        printf("file not found\n");
+    if(i < 10){
+        return "in0" + to_string(i) + ".txt";
+    }
+    return "in" + to_string(i) + ".txt";
 }
 
-void Graph::addStop(Stop &stop) {
-    this->stops.push_back(stop);
+Graph::Graph(int fileIndex){
+    readNetwork(fileIndex);
+    readStops(); //Iterates through edges vector creating adjacency list for the stops, creates stops vector
 }
-// Add edge from source to destination with a certain weight
-void Graph::addEdge(int src, Stop& dest, int weight,string code) {
-    if (src<1 || src>n ) return;
-    stops[src].addEdge(Edge(dest,weight,code));
-    if (!hasDir) dest.addEdge(Edge(dest,weight,code));
+
+void Graph::readNetwork(int fileNumber){
+    string file = TESTS_FOLDER + filename(fileNumber);
+    ifstream networkFile(file);
+
+    if(networkFile.fail()){
+        cerr << "file error\n";
+    }
+
+    /* network attributes*/
+    string numNodes, numVehicles;
+
+    /* trip attributes*/
+    string departure, arrival, capacity, duration;
+
+    getline(networkFile, numNodes, ' ');
+    cout << "total number of nodes: " << numNodes << endl;
+    getline(networkFile, numVehicles);
+    cout << "total number of vehicles: " << numVehicles << endl;
+
+
+    while(getline(networkFile, departure, ' ')){
+        cout << "departure: " << departure << endl;
+        getline(networkFile, arrival, ' ');
+        cout << "arrival: " << arrival << endl;
+        getline(networkFile, capacity, ' ');
+        cout << "capacity: " << capacity << endl;
+        getline(networkFile, duration);
+        Vehicle e1(stoi(departure), stoi(arrival), stoi(capacity), stoi(duration));
+        vehicles.push_back(e1);
+    }
+
+    totalStops = stoi(numNodes);
+    totalVehicles = stoi(numVehicles);
+
+}
+
+void Graph::readStops(){
+    for(int i=1; i <=totalStops; i++){
+        Stop a;
+        stops.push_back(a);
+    }
+    for(int i=0; i<totalVehicles; i++){
+        stops[vehicles[i].getOrigin()].addVehicle(i);
+    }
 }
 
 // Depth-First Search: example implementation
-void Graph::dfs(Stop& w) {
-    w.setVisited(true) ;
-    for (auto &e : w.getAdj()) {
-        Stop w = e.getDest();
-        if (w.getVisited())
+void Graph::dfs(int w) {
+    stops[w].setVisited(true) ;
+    for (int i = 0; i < stops[w].getAdj().size(); i++){
+        int u = vehicles[i].getDest();
+        if (stops[w].isVisited())
             dfs(w);
     }
 }
 
 // Depth-First Search: example implementation
-void Graph::bfs(Stop& x) {
-    for (int v=1; v<=n; v++) stops[v].setVisited(false);
-    queue<Stop> q; // queue of unvisited nodes
+void Graph::bfs(int x) {
+    for (int v=1; v<=totalStops; v++) stops[v].setVisited(false);
+    queue<int> q; // queue of unvisited nodes
     q.push(x);
-    x.setVisited(true);
+    stops[x].setVisited(true);
     while (!q.empty()) { // while there are still unvisited nodes
-        Stop u = q.front(); q.pop();
-        for (auto e : u.getAdj()) {
-            Stop w = e.getDest();
-            if (!w.getVisited()) {
+        int u = q.front(); q.pop();
+        for (auto e : stops[u].getAdj()) {
+            int w = vehicles[e].getDest();
+            if (!stops[w].isVisited()) {
                 q.push(w);
-                w.setVisited(true);
+                stops[w].setVisited(true);
             }
         }
     }
 }
 
 
-
-// ----------------------------------------------------------
-// Exercicio 2: Componentes conexos
-// ----------------------------------------------------------
-
-// ..............................
-// a) Contando componentes conexos
-// TODO
-int Graph::connectedComponents() {
-    for (int v=1; v<=n; v++) stops[v].setVisited(false);
-    int res = 0;
-    for (int i=1 ; i<n;i++){
-        if (!stops[i].getVisited()){
-            res++;
-            visitando(stops[i]);
-        }
-    }
-    return res;
-}
-
-void Graph::visitando(Stop& v){
-    v.setVisited(true);
-    for (auto e : v.getAdj()) {
-        Stop w = e.getDest();
-        if (!w.getVisited())
-            visitando(w);
-    }
-}
-
-
-// ----------------------------------------------------------
-// Exercicio 3: Ordenacao topologica
-// ----------------------------------------------------------
-// TODO
-list<Stop> Graph::topologicalSorting() {
-    list<Stop> order;
-    for(int i = 1; i <= n; i++)
-        stops[i].setVisited(false);
-    for(int i = 1; i <= n; i++){
-        if(!stops[i].getVisited()){
-            dfsTopo(stops[i], order);
-        }
-    }
-    return order;
-}
-void Graph::dfsTopo(Stop& v, list<Stop>& order) {
-    v.setVisited(true);
-    for(auto &e : v.getAdj()){
-        Stop w = e.getDest();
-        if(!w.getVisited())
-            dfsTopo(w, order);
-    }
-    order.push_front(v);
-}
-
-// ..............................
-// a) Distancia entre dois nos
-// TODO
-int Graph::distance(Stop a, Stop b) {
-    if(a == b) return 0;
-    for(int i = 1; i <= n; i++)
-        stops[i].setDistance(-1);
-    bfsDist(a);
-    return b.getDistance();
-}
+// bfs algorithm
+/*
 void Graph::bfsDist(Stop x){
     x.setDistance(0);
     for (int v=1; v<=n; v++) stops[v].setVisited(false);
@@ -137,15 +123,10 @@ void Graph::bfsDist(Stop x){
     }
 
 }
+*/
 
-int Graph::getIndexStop(string code) {
-    for(int i=1;i<=n;i++){
-        if(stops[i].getCode()==code){
-            return i;
-        }
-    }
-    return -1;
-}
+//dijkstra algorithm
+/*
 int Graph::dijkstra_distance(Stop a, Stop b) {
     if (a==b) return 0;
     for(int i = 1; i <= n; i++) {
@@ -172,6 +153,4 @@ int Graph::dijkstra_distance(Stop a, Stop b) {
     if (b.getDistance()==INT_MAX) return -1;
     return b.getDistance();
 }
-
-
-
+*/

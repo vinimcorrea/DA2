@@ -3,7 +3,7 @@ project(second_project)
 
 set(CMAKE_CXX_STANDARD 14)
 
-add_executable(second_project main.cpp Classes/Database.cpp
+add_executable(second_project main.cpp
         Classes/Algorithm.cpp Classes/Algorithm.h Classes/Graph.h
-        Classes/Graph.cpp Classes/StopEdge.h Classes/StopEdge.cpp
-        Classes/Network.cpp Classes/Vehicle.cpp)
+        Classes/Graph.cpp Classes/StopVehicle.h Classes/StopVehicle.cpp
+        )

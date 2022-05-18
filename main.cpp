@@ -1,8 +1,8 @@
-#include <iostream>
-#include "Database.h"
+#include "Classes/Graph.h"
 
 int main() {
-    Database d1;
-    d1.readNetwork(3);
+    Graph g1(4);
+
+
     return 0;
 }

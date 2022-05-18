@@ -86,34 +86,16 @@
 		<Unit filename="/Users/viniciuscorrea/Desktop/university/DA/DA2/Classes/Algorithm.h">
 			<Option target="second_project"/>
 		</Unit>
-		<Unit filename="/Users/viniciuscorrea/Desktop/university/DA/DA2/Classes/Database.cpp">
-			<Option target="second_project"/>
-		</Unit>
-		<Unit filename="/Users/viniciuscorrea/Desktop/university/DA/DA2/Classes/Database.h">
-			<Option target="second_project"/>
-		</Unit>
 		<Unit filename="/Users/viniciuscorrea/Desktop/university/DA/DA2/Classes/Graph.cpp">
 			<Option target="second_project"/>
 		</Unit>
 		<Unit filename="/Users/viniciuscorrea/Desktop/university/DA/DA2/Classes/Graph.h">
 			<Option target="second_project"/>
 		</Unit>
-		<Unit filename="/Users/viniciuscorrea/Desktop/university/DA/DA2/Classes/Network.cpp">
+		<Unit filename="/Users/viniciuscorrea/Desktop/university/DA/DA2/Classes/StopVehicle.cpp">
 			<Option target="second_project"/>
 		</Unit>
-		<Unit filename="/Users/viniciuscorrea/Desktop/university/DA/DA2/Classes/Network.h">
-			<Option target="second_project"/>
-		</Unit>
-		<Unit filename="/Users/viniciuscorrea/Desktop/university/DA/DA2/Classes/StopEdge.cpp">
-			<Option target="second_project"/>
-		</Unit>
-		<Unit filename="/Users/viniciuscorrea/Desktop/university/DA/DA2/Classes/StopEdge.h">
-			<Option target="second_project"/>
-		</Unit>
-		<Unit filename="/Users/viniciuscorrea/Desktop/university/DA/DA2/Classes/Vehicle.cpp">
-			<Option target="second_project"/>
-		</Unit>
-		<Unit filename="/Users/viniciuscorrea/Desktop/university/DA/DA2/Classes/Vehicle.h">
+		<Unit filename="/Users/viniciuscorrea/Desktop/university/DA/DA2/Classes/StopVehicle.h">
 			<Option target="second_project"/>
 		</Unit>
 		<Unit filename="/Users/viniciuscorrea/Desktop/university/DA/DA2/main.cpp">

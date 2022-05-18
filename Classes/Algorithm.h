@@ -6,8 +6,8 @@
 #define SECOND_PROJECT_ALGORITHM_H
 
 
-#include "Database.h"
 #include <vector>
+#include "Graph.h"
 
 using namespace std;
 
@@ -16,7 +16,7 @@ using namespace std;
  *
  */
 class Algorithm {
-    Database db;
+    Graph graph;
 
     /**
      * Solves scenario 1(Groups do not separate), case 1 -  Find maximum group size possible from a given origin to a destiny
