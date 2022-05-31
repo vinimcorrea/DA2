@@ -203,7 +203,6 @@ bool Graph::existPath(int a, int b) {
 
 int Graph::fordFulkerson(int s, int t) {
     int max_flow = 0;
-
     for(int i = 0; i < totalVehicles; i++){
         vehicles[i].setFlow(0);
     }
@@ -242,12 +241,14 @@ int Graph::fordFulkerson(int s, int t) {
             for(auto &e : residualGraph.stops[u].getAdj()){
                 if(vehicles[e].getDest() == v){
                     vehicles[e].setCapacity(vehicles[e].getCapacity() - path_flow);
+                    //maybe residualGraph?
                 }
             }
             int r = 0;
             for(auto &e : residualGraph.stops[v].getAdj()){
                 if(vehicles[e].getDest() == u){
                     vehicles[e].setCapacity(vehicles[e].getCapacity() + path_flow);
+                    //maybe residualGraph?
                 }
                 else if(residualGraph.stops[v].getAdj()[r] == residualGraph.stops[v].getAdj().size()-1){
                     residualGraph.addVehicle(v, u, path_flow, vehicles[e].getTime());
