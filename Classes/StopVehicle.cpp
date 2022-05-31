@@ -14,7 +14,33 @@ bool Stop::isVisited() const {
     return visited;
 }
 
+void Stop::setAdj(const vector<int> &adj) {
+    Stop::adj = adj;
+}
 
+int Stop::getDistance() const {
+    return distance;
+}
+
+void Stop::setDistance(int distance) {
+    Stop::distance = distance;
+}
+
+int Stop::getPred() const {
+    return pred;
+}
+
+void Stop::setPred(int pred) {
+    Stop::pred = pred;
+}
+
+int Stop::getMaxCapacity() const {
+    return maxCapacity;
+}
+
+void Stop::setMaxCapacity(int maxCapacity) {
+    Stop::maxCapacity = maxCapacity;
+}
 
 
 Vehicle::Vehicle(const int origin, const int dest, const int capacity, const int time) : origin(origin), dest(dest),
@@ -25,12 +51,20 @@ const int Vehicle::getOrigin() const {
 int Vehicle::getDest() const {
     return dest;
 }
-const int Vehicle::getCapacity() const {
+int Vehicle::getCapacity() const {
     return capacity;
 }
-const int Vehicle::getTime() const {
+int Vehicle::getTime() const {
     return time;
 }
 int Vehicle::getFlow() const {
     return flow;
+}
+
+void Vehicle::setFlow(int flow) {
+    Vehicle::flow = flow;
+}
+
+void Vehicle::setCapacity(int capacity) {
+    Vehicle::capacity = capacity;
 }

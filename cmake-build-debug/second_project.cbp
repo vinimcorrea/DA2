@@ -98,6 +98,12 @@
 		<Unit filename="/Users/viniciuscorrea/Desktop/university/DA/DA2/Classes/StopVehicle.h">
 			<Option target="second_project"/>
 		</Unit>
+		<Unit filename="/Users/viniciuscorrea/Desktop/university/DA/DA2/Classes/maxHeap.h">
+			<Option target="second_project"/>
+		</Unit>
+		<Unit filename="/Users/viniciuscorrea/Desktop/university/DA/DA2/Classes/minHeap.h">
+			<Option target="second_project"/>
+		</Unit>
 		<Unit filename="/Users/viniciuscorrea/Desktop/university/DA/DA2/main.cpp">
 			<Option target="second_project"/>
 		</Unit>

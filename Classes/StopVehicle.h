@@ -21,28 +21,51 @@ class Stop {
 private:
     vector<int> adj;
     bool visited;
+    int distance;
+    int pred;
+    int maxCapacity;
 
 public:
     vector<int> getAdj() const;
     void addVehicle(int vehicle);
     bool isVisited() const;
     void setVisited(bool visited);
+
+    void setAdj(const vector<int> &adj);
+
+    int getDistance() const;
+
+    void setDistance(int distance);
+
+    int getPred() const;
+
+    void setPred(int pred);
+
+    int getMaxCapacity() const;
+
+    void setMaxCapacity(int maxCapacity);
+
 };
 
 class Vehicle{
 private:
     const int origin;
     const int dest;      // Destination node // An integer weight
-    const int capacity;
-    const int time;
+    int capacity;
+    int time;
     int flow = 0;            //temporary variable, not const
 
 public:
     Vehicle(const int origin, const int dest, const int capacity, const int time);
     int getDest() const;
-    const int getCapacity() const;
-    const int getTime() const;
+    int getCapacity() const;
+    int getTime() const;
     int getFlow() const;
+
+    void setFlow(int flow);
+    void setCapacity(int capacity);
+
+
 
     const int getOrigin() const;
 };

@@ -8,12 +8,15 @@
 #include <queue>
 #include <iostream>
 #include "StopVehicle.h"
+#include "maxHeap.h"
+#include "minHeap.h"
 
 using namespace std;
 
 class Graph {
     int totalStops;
     int totalVehicles;
+    int fileIndex;
     vector<Vehicle> vehicles;
     vector<Stop> stops;
 
@@ -28,12 +31,24 @@ public:
     // Breadth-First Search: example implementation
     void bfs(int v);
 
+    int minimumTransshipments(int s, int t);
 
-    int distance(Stop a, Stop b);
 
-    void bfsDist(Stop v);
+    void bfsDist(int v);
+
+    bool existPath(int a, int b);
+
+    int fordFulkerson(int s, int t);
+
+    void addVehicle(int src, int dest, int capacity, int duration);
+
+
     int dijkstra_distance (Stop a, Stop b);
     int getIndexStop(string code);
+
+
+    int maximumCapacityWays(int s, int t);
+    int setDistance(int s);
 };
 
 #endif
