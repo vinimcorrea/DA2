@@ -7,6 +7,7 @@
 #include <list>
 #include <queue>
 #include <iostream>
+#include <utility>
 #include "StopVehicle.h"
 #include "maxHeap.h"
 #include "minHeap.h"
@@ -20,6 +21,8 @@ class Graph {
     vector<Vehicle> vehicles;
     vector<Stop> stops;
 
+    vector<pair<int, int>> pathFlowDuration;
+
 public:
     Graph(int fileNumber);
     void readNetwork(int fileNumber);
@@ -31,7 +34,7 @@ public:
     // Breadth-First Search: example implementation
     void bfs(int v);
 
-    int minimumTransshipments(int s, int t);
+    int minimumTransshipments(int s, int t); // 1.2
 
 
     void bfsDist(int v);
@@ -47,12 +50,19 @@ public:
     int getIndexStop(string code);
 
 
-    int maximumCapacityWays(int s, int t);
+    int maximumCapacityWays(int s, int t); // 1.1
     int setDistance(int s);
+    void bfsprint(int s, int given);
 
-    int fordFulkerson(int s, int t, int given);
+    int fordFulkerson(int s, int t, int given); //2.1 & 2.3
+    int fordFulkersonNonZeroFlow(int s, int t, int units); //2.2
+    void makeResidualGraph();
 
-    void bfsprint(int s, int t, int given);
+    int getMinDuration(int s, int t,int people); // 2.4
+
+    int stopOutwardFlow(int s);
+
+    vector<pair<int, int>> getPath() const;
 };
 
 #endif

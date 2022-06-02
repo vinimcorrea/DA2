@@ -9,8 +9,9 @@ int main() {
 
     //g1.fordFulkerson(1, 4, 12);
 
-    g1.fordFulkerson(1, 4,6);
+    g1.fordFulkerson(1, 4,12);
 
+    cout << g1.getMinDuration(1,4, 3);
 
     return 0;
 }

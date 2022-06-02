@@ -49,8 +49,6 @@ public:
     int getPeople();
 
     void setPeople(int people);
-
-    int depth;
 };
 
 class Vehicle{

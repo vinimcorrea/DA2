@@ -202,18 +202,63 @@ bool Graph::existPath(int a, int b) {
     bfs(a);
     return stops[b].isVisited();
 }
-
-int Graph::fordFulkerson(int s, int t, int given) {
-    int max_flow = 0;
-    for(int i = 0; i < totalVehicles; i++){
-        vehicles[i].setFlow(0);
+int Graph::stopOutwardFlow(int s){
+    int adder=0;
+    for(auto e : stops[s].getAdj()){
+        adder+=vehicles[e].getFlow();
     }
+    return adder;
+}
+
+int Graph::getMinDuration(int source, int sink, int people) {
+    fordFulkerson(source, sink, people);
+    int duration = 0;
+
+    for(auto &e : pathFlowDuration){
+        people -= e.first;
+        duration = max(duration, e.second);
+    }
+
+    if(people > 0){
+        cerr << "Unable to join those people together" << endl;
+    }
+
+    return duration;
+}
+
+void Graph::makeResidualGraph(){
+    for(int i=0; i<stops.size();i++){
+        for(auto e : stops[i].getAdj()){
+            int flow = vehicles[e].getFlow();
+            if(flow > 0){
+                vehicles[e].setCapacity(vehicles[e].getCapacity() - flow);
+                int dest = vehicles[e].getDest();
+                bool oppositeEdgeExists=false;
+                for(auto e2 : stops[dest].getAdj()){
+                    if(vehicles[e2].getDest() == i){
+                        vehicles[e2].setCapacity(vehicles[e2].getCapacity() + flow);
+                        oppositeEdgeExists=true;
+                        break;
+                    }
+                }
+                if(!oppositeEdgeExists){
+                    addVehicle(dest, i, flow, 0);
+                    //TODO: Change Duration from 0
+                }
+            }
+
+        }
+    }
+}
+
+int Graph::fordFulkersonNonZeroFlow(int s, int t, int units){
+    int init_flow = stopOutwardFlow(s);
+    int max_flow = init_flow;
     // 1. Create the residual graph. (Same as the original graph.)
     Graph residualGraph = *this;
-
+    residualGraph.makeResidualGraph();
     // 2. Keep calling BFS to check for an augmenting path from the source to the sink...
     while(residualGraph.existPath(s, t)){
-
         // 3. Find the max flow through the path we just found.
         int path_flow = INT32_MAX;
 
@@ -265,8 +310,8 @@ int Graph::fordFulkerson(int s, int t, int given) {
             v = u;
         }
         max_flow += path_flow;
-        if(max_flow >= given){
-            bfsprint(s,t,given);
+        if(max_flow >= init_flow + units){
+            bfsprint(s, init_flow + units);
             return max_flow;
         }
 
@@ -275,8 +320,90 @@ int Graph::fordFulkerson(int s, int t, int given) {
     return max_flow;
 }
 
-void Graph::bfsprint(int s, int t, int given){
-    //depthInit(s);
+int Graph::fordFulkerson(int s, int t, int given=INT32_MAX) {
+    vector<pair<int, int>> paths;
+    int max_flow = 0;
+    for(int i = 0; i < totalVehicles; i++){
+        vehicles[i].setFlow(0);
+    }
+    // 1. Create the residual graph. (Same as the original graph.)
+    Graph residualGraph = *this;
+
+    // 2. Keep calling BFS to check for an augmenting path from the source to the sink...
+    while(residualGraph.existPath(s, t)){
+
+        // 3. Find the max flow through the path we just found.
+        int path_flow = INT32_MAX;
+
+        int duration = 0;
+        // Go through the path we just found. Iterate through the path.
+        int v = t;
+        while(v != s){
+
+            int u = residualGraph.stops[v].getPred(); // The parent.
+
+            // Update the path flow to this capacity if it's smaller
+            for(auto &e : residualGraph.stops[u].getAdj()){
+                if(residualGraph.vehicles[e].getDest() == v){
+                    path_flow = min(path_flow, residualGraph.vehicles[e].getCapacity());
+                    duration += residualGraph.vehicles[e].getTime();
+                }
+            }
+
+            // Setup for the next edge in the path.
+            v = u;
+        }
+        cout << "path: "<< path_flow <<" " << "duration: " << duration << endl;
+        paths.push_back({path_flow, duration});
+        // 4. Update the residual capacities of the edges and reverse edges.
+        v = t;
+        while(v != s){
+            int u = residualGraph.stops[v].getPred(); // The parent.
+
+            for(auto &e : residualGraph.stops[u].getAdj()){
+                if(residualGraph.vehicles[e].getDest() == v){
+                    residualGraph.vehicles[e].setCapacity(residualGraph.vehicles[e].getCapacity() - path_flow);
+                    vehicles[e].setFlow(vehicles[e].getFlow() + path_flow);
+                    //maybe residualGraph?
+                }
+            }
+            bool hasReverseEdge = false;
+            for(auto &e : residualGraph.stops[v].getAdj()){
+                if(residualGraph.vehicles[e].getDest() == u){
+                    hasReverseEdge=true;
+                    residualGraph.vehicles[e].setCapacity(residualGraph.vehicles[e].getCapacity() + path_flow);
+                    //vehicles[e].setFlow(path_flow);
+                    //maybe residualGraph?
+                    break;
+                }
+            }
+            if(!hasReverseEdge){
+                residualGraph.addVehicle(v, u, path_flow, 0);
+                //TODO: Change Time from 0
+            }
+            // Setup for the next edge in the path.
+            v = u;
+        }
+        max_flow += path_flow;
+        if(max_flow >= given){
+            this->pathFlowDuration = paths;
+            bfsprint(s, given);
+            return max_flow;
+        }
+
+    }
+    this->pathFlowDuration = paths;
+
+    if(given == INT32_MAX){
+        bfsprint(s,given);
+        cout << "Max flow is: " << max_flow;
+        return max_flow;
+    }
+    cout << "Could not find a path for the group, the max flow is: " << max_flow;
+    return max_flow;
+}
+
+void Graph::bfsprint(int s, int given){
     for (int v=1; v<=totalStops; v++) stops[v].setPeople(0);
     for (int v=1; v<=totalStops; v++) stops[v].setVisited(false);
     queue<int> q; // queue of unvisited nodes
