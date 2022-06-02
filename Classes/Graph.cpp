@@ -110,25 +110,6 @@ void Graph::bfs(int x) {
     }
 }
 
-// Depth-First Search: example implementation
-void Graph::depthInit(int x) {
-    for (int v=1; v<=totalStops; v++) stops[v].setVisited(false);
-    queue<int> q; // queue of unvisited nodes
-    q.push(x);
-    stops[x].setVisited(true);
-    while (!q.empty()) { // while there are still unvisited nodes
-        int u = q.front(); q.pop();
-        for (auto e : stops[u].getAdj()) {
-            vehicles[e].setDepth(stops[x].getDepth()+1);
-            int w = vehicles[e].getDest();
-            if (!stops[w].isVisited()) {
-                q.push(w);
-                stops[w].setVisited(true);
-            }
-        }
-    }
-}
-
 int Graph::maximumCapacityWays(int s, int t) {
     MaxHeap<int, int> maxHeap = MaxHeap<int, int>(totalStops,-1);
 

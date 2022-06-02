@@ -42,14 +42,6 @@ void Stop::setMaxCapacity(int maxCapacity) {
     Stop::maxCapacity = maxCapacity;
 }
 
-void Stop::setDepth(int depth) {
-    Stop::depth = depth;
-}
-
-int Stop::getDepth() {
-    return depth;
-}
-
 int Stop::getPeople(){
     return people;
 }

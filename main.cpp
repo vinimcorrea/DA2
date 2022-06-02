@@ -9,7 +9,7 @@ int main() {
 
     //g1.fordFulkerson(1, 4, 12);
 
-    g1.fordFulkerson(1, 4,11);
+    g1.fordFulkerson(1, 4,6);
 
 
     return 0;

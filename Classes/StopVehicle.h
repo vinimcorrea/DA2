@@ -46,13 +46,9 @@ public:
 
     void setMaxCapacity(int maxCapacity);
 
-    int getDepth();
-
     int getPeople();
 
     void setPeople(int people);
-
-    void setDepth(int depth);
 
     int depth;
 };
@@ -76,16 +72,7 @@ public:
 
     void setFlow(int flow);
     void setCapacity(int capacity);
-
-
-
     const int getOrigin() const;
-
-    int depth;
-
-    int getDepth(int depth);
-
-    void setDepth(int depth);
 };
 
 #endif //STOP_EDGE_H

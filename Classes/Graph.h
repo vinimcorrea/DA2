@@ -53,8 +53,6 @@ public:
     int fordFulkerson(int s, int t, int given);
 
     void bfsprint(int s, int t, int given);
-
-    void depthInit(int x);
 };
 
 #endif
