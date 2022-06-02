@@ -50,7 +50,7 @@ public:
 
     int getPeople();
 
-    int setPeople(int people);
+    void setPeople(int people);
 
     void setDepth(int depth);
 

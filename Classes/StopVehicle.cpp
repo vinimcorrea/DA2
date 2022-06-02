@@ -54,7 +54,7 @@ int Stop::getPeople(){
     return people;
 }
 
-int Stop::setPeople(int people){
+void Stop::setPeople(int people){
     Stop::people = people;
 }
 
