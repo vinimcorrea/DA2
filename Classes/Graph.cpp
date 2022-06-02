@@ -96,9 +96,30 @@ void Graph::bfs(int x) {
     queue<int> q; // queue of unvisited nodes
     q.push(x);
     stops[x].setVisited(true);
+    stops[x].setPred(-1);
     while (!q.empty()) { // while there are still unvisited nodes
         int u = q.front(); q.pop();
         for (auto e : stops[u].getAdj()) {
+            int w = vehicles[e].getDest();
+            if (!stops[w].isVisited() && vehicles[e].getCapacity() > 0) {
+                q.push(w);
+                stops[w].setVisited(true);
+                stops[w].setPred(u);
+            }
+        }
+    }
+}
+
+// Depth-First Search: example implementation
+void Graph::depthInit(int x) {
+    for (int v=1; v<=totalStops; v++) stops[v].setVisited(false);
+    queue<int> q; // queue of unvisited nodes
+    q.push(x);
+    stops[x].setVisited(true);
+    while (!q.empty()) { // while there are still unvisited nodes
+        int u = q.front(); q.pop();
+        for (auto e : stops[u].getAdj()) {
+            vehicles[e].setDepth(stops[x].getDepth()+1);
             int w = vehicles[e].getDest();
             if (!stops[w].isVisited()) {
                 q.push(w);
@@ -201,7 +222,7 @@ bool Graph::existPath(int a, int b) {
     return stops[b].isVisited();
 }
 
-int Graph::fordFulkerson(int s, int t) {
+int Graph::fordFulkerson(int s, int t, int given) {
     int max_flow = 0;
     for(int i = 0; i < totalVehicles; i++){
         vehicles[i].setFlow(0);
@@ -224,9 +245,9 @@ int Graph::fordFulkerson(int s, int t) {
 
             // Update the path flow to this capacity if it's smaller
             for(auto &e : residualGraph.stops[u].getAdj()){
-                if(vehicles[e].getDest() == v){
-                    path_flow = min(path_flow, vehicles[e].getCapacity());
-                    duration += vehicles[e].getTime();
+                if(residualGraph.vehicles[e].getDest() == v){
+                    path_flow = min(path_flow, residualGraph.vehicles[e].getCapacity());
+                    duration += residualGraph.vehicles[e].getTime();
                 }
             }
 
@@ -239,31 +260,68 @@ int Graph::fordFulkerson(int s, int t) {
             int u = residualGraph.stops[v].getPred(); // The parent.
 
             for(auto &e : residualGraph.stops[u].getAdj()){
-                if(vehicles[e].getDest() == v){
-                    vehicles[e].setCapacity(vehicles[e].getCapacity() - path_flow);
+                if(residualGraph.vehicles[e].getDest() == v){
+                    residualGraph.vehicles[e].setCapacity(residualGraph.vehicles[e].getCapacity() - path_flow);
+                    vehicles[e].setFlow(vehicles[e].getFlow() + path_flow);
                     //maybe residualGraph?
                 }
             }
-            int r = 0;
+            bool hasReverseEdge = false;
             for(auto &e : residualGraph.stops[v].getAdj()){
-                if(vehicles[e].getDest() == u){
-                    vehicles[e].setCapacity(vehicles[e].getCapacity() + path_flow);
+                if(residualGraph.vehicles[e].getDest() == u){
+                    hasReverseEdge=true;
+                    residualGraph.vehicles[e].setCapacity(residualGraph.vehicles[e].getCapacity() + path_flow);
+                    //vehicles[e].setFlow(path_flow);
                     //maybe residualGraph?
+                    break;
                 }
-                else if(residualGraph.stops[v].getAdj()[r] == residualGraph.stops[v].getAdj().size()-1){
-                    residualGraph.addVehicle(v, u, path_flow, vehicles[e].getTime());
-                }
-                r++;
+            }
+            if(!hasReverseEdge){
+                residualGraph.addVehicle(v, u, path_flow, 0);
+                //TODO: Change Time from 0
             }
             // Setup for the next edge in the path.
             v = u;
         }
         max_flow += path_flow;
-    }
+        if(max_flow >= given){
+            bfsprint(s,t,given);
+            return max_flow;
+        }
 
+    }
+    cout << "Could not find a path for the group, the max flow is: " << max_flow;
     return max_flow;
 }
 
+void Graph::bfsprint(int s, int t, int given){
+    //depthInit(s);
+    for (int v=1; v<=totalStops; v++) stops[v].setPeople(0);
+    for (int v=1; v<=totalStops; v++) stops[v].setVisited(false);
+    queue<int> q; // queue of unvisited nodes
+    q.push(s);
+    stops[s].setVisited(true);
+    stops[s].setPeople(given);
+    while (!q.empty()) { // while there are still unvisited nodes
+        int u = q.front(); q.pop();
+        for (auto &e : stops[u].getAdj()) {
+            int w = vehicles[e].getDest();
+            if(vehicles[e].getFlow() > 0 && stops[u].getPeople() > 0){
+                int peopleSent = min(vehicles[e].getFlow(), stops[u].getPeople());
+                cout << "From: " << vehicles[e].getOrigin() << " To: " << vehicles[e].getDest()
+                     << " Quantity: " << peopleSent << endl;
+                stops[u].setPeople(stops[u].getPeople() - peopleSent);
+                stops[w].setPeople(stops[w].getPeople() + peopleSent);
+                stops[w].setVisited(false);
+            }
+            if (!stops[w].isVisited()) {
+                q.push(w);
+                stops[w].setVisited(true);
+            }
+        }
+        cout << "----------------------------------------------------------------" << endl;
+    }
+}
 
 //dijkstra algorithm
 /*

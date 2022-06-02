@@ -24,6 +24,7 @@ private:
     int distance;
     int pred;
     int maxCapacity;
+    int people;
 
 public:
     vector<int> getAdj() const;
@@ -45,10 +46,21 @@ public:
 
     void setMaxCapacity(int maxCapacity);
 
+    int getDepth();
+
+    int getPeople();
+
+    int setPeople(int people);
+
+    void setDepth(int depth);
+
+    int depth;
 };
 
 class Vehicle{
 private:
+    Vehicle(const int origin, const int dest, const int capacity, const int time, const int depth);
+
     const int origin;
     const int dest;      // Destination node // An integer weight
     int capacity;
@@ -68,6 +80,12 @@ public:
 
 
     const int getOrigin() const;
+
+    int depth;
+
+    int getDepth(int depth);
+
+    void setDepth(int depth);
 };
 
 #endif //STOP_EDGE_H

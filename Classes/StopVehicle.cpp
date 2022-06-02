@@ -42,29 +42,50 @@ void Stop::setMaxCapacity(int maxCapacity) {
     Stop::maxCapacity = maxCapacity;
 }
 
-
-Vehicle::Vehicle(const int origin, const int dest, const int capacity, const int time) : origin(origin), dest(dest),
-                                                                                         capacity(capacity), time(time) {}
-const int Vehicle::getOrigin() const {
-    return origin;
-}
-int Vehicle::getDest() const {
-    return dest;
-}
-int Vehicle::getCapacity() const {
-    return capacity;
-}
-int Vehicle::getTime() const {
-    return time;
-}
-int Vehicle::getFlow() const {
-    return flow;
+void Stop::setDepth(int depth) {
+    Stop::depth = depth;
 }
 
-void Vehicle::setFlow(int flow) {
-    Vehicle::flow = flow;
+int Stop::getDepth() {
+    return depth;
 }
 
-void Vehicle::setCapacity(int capacity) {
-    Vehicle::capacity = capacity;
+int Stop::getPeople(){
+    return people;
 }
+
+int Stop::setPeople(int people){
+    Stop::people = people;
+}
+
+
+    Vehicle::Vehicle(
+    const int origin,
+    const int dest,
+    const int capacity,
+    const int time) : origin(origin), dest(dest),
+            capacity(capacity), time(time)
+    {}
+    const int Vehicle::getOrigin() const {
+        return origin;
+    }
+    int Vehicle::getDest() const {
+        return dest;
+    }
+    int Vehicle::getCapacity() const {
+        return capacity;
+    }
+    int Vehicle::getTime() const {
+        return time;
+    }
+    int Vehicle::getFlow() const {
+        return flow;
+    }
+
+    void Vehicle::setFlow(int flow) {
+        Vehicle::flow = flow;
+    }
+
+    void Vehicle::setCapacity(int capacity) {
+        Vehicle::capacity = capacity;
+    }
