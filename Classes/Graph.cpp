@@ -1,6 +1,3 @@
-//
-// Created by 35196 on 24/01/2022.
-//
 #include <iostream>
 #include <fstream>
 #include <string>
@@ -174,10 +171,6 @@ int Graph::minimumTransshipments(int s, int t){
     return stops[t].getDistance()-1;
 }
 
-
-
-// bfs algorithm
-
 void Graph::bfsDist(int x){
     stops[x].setDistance(0);
     for (int v=1; v<=totalStops; v++) stops[v].setVisited(false);
@@ -289,7 +282,6 @@ int Graph::fordFulkersonNonZeroFlow(int s, int t, int units){
                 if(residualGraph.vehicles[e].getDest() == v){
                     residualGraph.vehicles[e].setCapacity(residualGraph.vehicles[e].getCapacity() - path_flow);
                     vehicles[e].setFlow(vehicles[e].getFlow() + path_flow);
-                    //maybe residualGraph?
                 }
             }
             bool hasReverseEdge = false;
@@ -297,8 +289,6 @@ int Graph::fordFulkersonNonZeroFlow(int s, int t, int units){
                 if(residualGraph.vehicles[e].getDest() == u){
                     hasReverseEdge=true;
                     residualGraph.vehicles[e].setCapacity(residualGraph.vehicles[e].getCapacity() + path_flow);
-                    //vehicles[e].setFlow(path_flow);
-                    //maybe residualGraph?
                     break;
                 }
             }
@@ -364,7 +354,6 @@ int Graph::fordFulkerson(int s, int t, int given=INT32_MAX) {
                 if(residualGraph.vehicles[e].getDest() == v){
                     residualGraph.vehicles[e].setCapacity(residualGraph.vehicles[e].getCapacity() - path_flow);
                     vehicles[e].setFlow(vehicles[e].getFlow() + path_flow);
-                    //maybe residualGraph?
                 }
             }
             bool hasReverseEdge = false;
@@ -372,8 +361,6 @@ int Graph::fordFulkerson(int s, int t, int given=INT32_MAX) {
                 if(residualGraph.vehicles[e].getDest() == u){
                     hasReverseEdge=true;
                     residualGraph.vehicles[e].setCapacity(residualGraph.vehicles[e].getCapacity() + path_flow);
-                    //vehicles[e].setFlow(path_flow);
-                    //maybe residualGraph?
                     break;
                 }
             }
