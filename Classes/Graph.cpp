@@ -395,6 +395,7 @@ int Graph::fordFulkerson(int s, int t, int given=INT32_MAX) {
     this->pathFlowDuration = paths;
 
     if(given == INT32_MAX){
+        cout << "----------------------------------------------------------------" << endl;
         bfsprint(s,given);
         cout << "Max flow is: " << max_flow;
         return max_flow;
@@ -410,7 +411,9 @@ void Graph::bfsprint(int s, int given){
     q.push(s);
     stops[s].setVisited(true);
     stops[s].setPeople(given);
+    bool printed; // to avoid line spam
     while (!q.empty()) { // while there are still unvisited nodes
+        printed = false;
         int u = q.front(); q.pop();
         for (auto &e : stops[u].getAdj()) {
             int w = vehicles[e].getDest();
@@ -421,13 +424,14 @@ void Graph::bfsprint(int s, int given){
                 stops[u].setPeople(stops[u].getPeople() - peopleSent);
                 stops[w].setPeople(stops[w].getPeople() + peopleSent);
                 stops[w].setVisited(false);
+                printed = true;
             }
             if (!stops[w].isVisited()) {
                 q.push(w);
                 stops[w].setVisited(true);
             }
         }
-        cout << "----------------------------------------------------------------" << endl;
+        if(printed) cout << "----------------------------------------------------------------" << endl;
     }
 }
 
