@@ -133,12 +133,10 @@ int main() {
                 cin >> end;
                 cout << "Group size: " ;
                 cin >> given;
-                cout << "Units to increase: " ;
-                cin >> units;
-                cout << "Previous path: " << endl;
-                g1.fordFulkerson(start, end, given);
                 cout << "Corrected path: " << endl;
-                g1.fordFulkersonNonZeroFlow(start, end, units);
+                g1.fordFulkerson(start, end, given);
+                vector<int> waiting_stops;
+                cout << g1.determineWaitTimes(start, end, waiting_stops);
                 break;
         }
     }

@@ -19,6 +19,7 @@ private:
     int latest_arrival;
     int earliest_arrival;
     int latest_departure;
+    int max_wait;
 
 public:
     vector<int> getAdj() const;
@@ -52,15 +53,23 @@ public:
 
     void setEarliestArrival(int earliestArrival);
 
+    void emptyAdj();
 
+    int getLatestDeparture() const;
+
+    void setLatestDeparture(int latestDeparture);
+
+    int getMaxWait() const;
+
+    void setMaxWait(int maxWait);
 };
 
 class Vehicle{
 private:
     Vehicle(const int origin, const int dest, const int capacity, const int time, const int depth);
 
-    const int origin;
-    const int dest;      // Destination node // An integer weight
+    int origin;
+    int dest;      // Destination node // An integer weight
     int capacity;
     int time;
     int flow = 0;            //temporary variable, not const
@@ -75,6 +84,7 @@ public:
     void setFlow(int flow);
     void setCapacity(int capacity);
     const int getOrigin() const;
+    void invertEdge();
 };
 
 #endif

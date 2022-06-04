@@ -276,28 +276,34 @@ int Graph::minDuration(int s, int t){
     return(stops[t].getLatestArrival());
 }
 
-int Graph::determineWaitTimes(int s, int t){
-    for (int v=1; v<=totalStops; v++) stops[v].setVisited(false);
-    for(auto &stop :stops){
-        stop.setEarliestArrival(INT32_MAX);
-        stop.setLatestArrival(0);
+void Graph::transposeGraph(){
+    for(int i=1; i<stops.size();i++){
+        stops[i].emptyAdj();
     }
-    stops[s].setEarliestArrival(0);
-    stops[s].setLatestArrival(0);
-    stops[s].setVisited(true);
+    for(int i=0; i<vehicles.size();i++){
+        vehicles[i].invertEdge();
+    }
+    for(int i=0; i<vehicles.size();i++){
+        stops[vehicles[i].getOrigin()].addVehicle(i);
+    }
+}
+
+int Graph::transposedDetermineWaitTimes(int s, int t, vector<int>& waiting_stops){
+    for (int v=1; v<=totalStops; v++) stops[v].setLatestDeparture(INT32_MAX);
+    for (int v=1; v<=totalStops; v++) stops[v].setVisited(false);
     queue<int> q; // queue of unvisited nodes
-    q.push(s);
+    q.push(t);
+    stops[t].setVisited(true);
+    stops[t].setLatestDeparture(stops[t].getLatestArrival());
     while (!q.empty()) { // while there are still unvisited nodes
         int u = q.front();
         q.pop();
         for (auto &e: stops[u].getAdj()) {
-            if(vehicles[e].getFlow() != 0){
+            if (vehicles[e].getFlow() != 0) {
                 int w = vehicles[e].getDest();
-                if (stops[w].getEarliestArrival() > stops[u].getLatestArrival() + vehicles[e].getTime()) {
-                    stops[w].setEarliestArrival(stops[u].getLatestArrival() + vehicles[e].getTime());
-                }
-                if (stops[w].getLatestArrival() < stops[u].getLatestArrival() + vehicles[e].getTime()) {
-                    stops[w].setLatestArrival(stops[u].getLatestArrival() + vehicles[e].getTime());
+                if (stops[w].getLatestDeparture() > stops[u].getLatestDeparture() - vehicles[e].getTime()) {
+                    stops[w].setLatestDeparture(stops[u].getLatestDeparture() - vehicles[e].getTime());
+                    stops[w].setVisited(false);
                 }
                 if (!stops[w].isVisited()) {
                     q.push(w);
@@ -306,7 +312,27 @@ int Graph::determineWaitTimes(int s, int t){
             }
         }
     }
-    return(stops[t].getLatestArrival());
+    int max_wait = 0;
+    for(int i=1; i<stops.size();i++){
+        stops[i].setMaxWait(stops[i].getLatestDeparture() - stops[i].getEarliestArrival());
+        if(stops[i].getMaxWait() > max_wait){
+            max_wait = stops[i].getMaxWait();
+        }
+    }
+    for(int i=1; i<stops.size();i++){
+        if(stops[i].getMaxWait() == max_wait){
+            waiting_stops.push_back(i);
+        }
+    }
+    return max_wait;
+}
+
+int Graph::determineWaitTimes(int s, int t, vector<int>& waiting_stops){
+    minDuration(s, t);
+    waiting_stops.clear();
+    Graph transposed = *this;
+    transposed.transposeGraph();
+    return transposed.transposedDetermineWaitTimes(s, t, waiting_stops);
 }
 
 int Graph::fordFulkersonNonZeroFlow(int s, int t, int units){
