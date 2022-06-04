@@ -17,54 +17,34 @@ using namespace std;
 class Graph {
     int totalStops;
     int totalVehicles;
-    int fileIndex;
     vector<Vehicle> vehicles;
+    int fileIndex;
     vector<Stop> stops;
-
-    vector<pair<int, int>> pathFlowDuration;
 
 public:
     Graph(int fileNumber);
+
     void readNetwork(int fileNumber);
     void readStops();
 
-
-    // Depth-First Search: example implementation
-    void dfs(int v);
-    // Breadth-First Search: example implementation
     void bfs(int v);
 
-    int minimumTransshipments(int s, int t); // 1.2
-
-
-    void bfsDist(int v);
-
-    bool existPath(int a, int b);
-    void addVehicle(int src, int dest, int capacity, int duration);
-    int dijkstra_distance (Stop a, Stop b);
-    int getIndexStop(string code);
-
-
-    int maximumCapacityWays(int s, int t); // 1.1
-    int setDistance(int s);
-    void bfsprint(int s, int given);
-
-    int fordFulkerson(int s, int t, int given=INT32_MAX); //2.1 & 2.3
-    int fordFulkersonNonZeroFlow(int s, int t, int units); //2.2
     void makeResidualGraph();
-    int determineWaitTimes(int s, int t, vector<int>& waiting_stops);//2.5
-    int transposedDetermineWaitTimes(int s, int t, vector<int>& waiting_stops);
-
-    int getMinDuration(int s, int t,int people);
-
-    int stopOutwardFlow(int s);
-
-    vector<pair<int, int>> getPath() const;
-
-    int minDuration(int s, int t);//2.4
-
     void transposeGraph();
 
+    bool pathExists(int a, int b);
+    void addVehicle(int src, int dest, int capacity, int duration);
+    int determineWaitTimes(int s, int t, vector<int>& waiting_stops);
+    int stopOutwardFlow(int s);
+
+    int unsplitGroupFindMaxSize(int s, int t); // 1.1
+    int unsplitGroupFindMinTransfers(int s, int t); // 1.2
+    int splitGroupFindPath(int s, int t, int given=INT32_MAX); //2.1 & 2.3
+    int splitGroupEnlargedGroup(int s, int t, int units); //2.2
+    int splitGroupFindMinDuration(int s, int t);//2.4
+    int splitGroupFindWaitTimes(int s, int t, vector<int>& waiting_stops);//2.5
+
+    void printPath(int s, int given);
     void printOne(int s, int t);
 };
 

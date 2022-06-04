@@ -69,19 +69,19 @@ int main() {
         {
             case 11:
                 cout << endl;
-                given = g1.maximumCapacityWays(start, end);
+                given = g1.unsplitGroupFindMaxSize(start, end);
                 cout << "The max size is " << given << endl;
                 cout << "The path is:" << endl;
                 g1.printOne(start,end);
                 break;
             case 12:
                 cout << endl;
-                given = g1.maximumCapacityWays(start, end);
+                given = g1.unsplitGroupFindMaxSize(start, end);
                 cout << "The max size is " << given << endl;
                 cout << "The max capacity path is:" << endl;
                 g1.printOne(start,end);
                 cout << endl; // split
-                given = g1.minimumTransshipments(start, end);
+                given = g1.unsplitGroupFindMinTransfers(start, end);
                 if(given > 0) {
                     cout << "The necessary size is " << given << endl;
                     cout << "The minimum transshipments path is:" << endl;
@@ -94,7 +94,7 @@ int main() {
                 cout << "Group size: " ;
                 cin >> given;
                 cout << endl;
-                g1.fordFulkerson(start, end, given);
+                g1.splitGroupFindPath(start, end, given);
                 cout << endl;
                 break;
             case 22:
@@ -104,30 +104,30 @@ int main() {
                 cin >> units;
                 cout << endl;
                 cout << "Previous path: " << endl;
-                g1.fordFulkerson(start, end, given);
+                g1.splitGroupFindPath(start, end, given);
                 cout << endl;
                 cout << "Corrected path: " << endl;
-                g1.fordFulkersonNonZeroFlow(start, end, units);
+                g1.splitGroupEnlargedGroup(start, end, units);
                 cout << endl;
                 break;
             case 23:
                 cout << endl;
-                dummy = g1.fordFulkerson(start, end);
+                dummy = g1.splitGroupFindPath(start, end);
                 cout << "Max size: " << dummy << endl;
                 cout << endl;
                 break;
             case 24:
-                cout << "The rendezvous stop is (index): " << g1.minDuration(start, end) << endl;
+                cout << "The rendezvous stop is (index): " << g1.splitGroupFindMinDuration(start, end) << endl;
                 cout << endl;
-                g1.minDuration(start, end);
+                g1.splitGroupFindMinDuration(start, end);
                 break;
             case 25:
                 cout << "Group size: " ;
                 cin >> given;
                 cout << "Corrected path: " << endl;
-                g1.fordFulkerson(start, end, given);
+                g1.splitGroupFindPath(start, end, given);
                 vector<int> waiting_stops;
-                cout << g1.determineWaitTimes(start, end, waiting_stops);
+                cout << g1.splitGroupFindWaitTimes(start, end, waiting_stops);
                 break;
         }
         wait();

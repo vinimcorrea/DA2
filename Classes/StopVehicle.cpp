@@ -1,15 +1,18 @@
 #include "StopVehicle.h"
 
 
- vector<int> Stop::getAdj() const{
+vector<int> Stop::getAdj() const{
     return adj;
 }
+
 void Stop::addVehicle(int vehicle){
     adj.push_back(vehicle);
 }
+
 void Stop::setVisited(bool visited) {
     Stop::visited = visited;
 }
+
 bool Stop::isVisited() const {
     return visited;
 }
@@ -42,7 +45,7 @@ void Stop::setMaxCapacity(int maxCapacity) {
     Stop::maxCapacity = maxCapacity;
 }
 
-int Stop::getPeople(){
+int Stop::getPeople() const{
     return people;
 }
 
@@ -87,39 +90,34 @@ void Stop::setMaxWait(int maxWait) {
 }
 
 
-Vehicle::Vehicle(
-    const int origin,
-    const int dest,
-    const int capacity,
-    const int time) : origin(origin), dest(dest),
-            capacity(capacity), time(time)
-    {}
-    const int Vehicle::getOrigin() const {
-        return origin;
-    }
-    int Vehicle::getDest() const {
-        return dest;
-    }
-    int Vehicle::getCapacity() const {
-        return capacity;
-    }
-    int Vehicle::getTime() const {
-        return time;
-    }
-    int Vehicle::getFlow() const {
-        return flow;
-    }
+Vehicle::Vehicle(int origin,int dest,int capacity,int time) : origin(origin), dest(dest),capacity(capacity), time(time){}
 
-    void Vehicle::setFlow(int flow) {
-        Vehicle::flow = flow;
-    }
+int Vehicle::getOrigin() const {
+    return origin;
+}
+int Vehicle::getDest() const {
+    return dest;
+}
+int Vehicle::getCapacity() const {
+    return capacity;
+}
+int Vehicle::getTime() const {
+    return time;
+}
+int Vehicle::getFlow() const {
+    return flow;
+}
 
-    void Vehicle::setCapacity(int capacity) {
-        Vehicle::capacity = capacity;
-    }
+void Vehicle::setFlow(int flow) {
+    Vehicle::flow = flow;
+}
 
-    void Vehicle::invertEdge(){
-        int temp = origin;
-        origin = dest;
-        dest=temp;
+void Vehicle::setCapacity(int capacity) {
+    Vehicle::capacity = capacity;
+}
+
+void Vehicle::invert(){
+    int temp = origin;
+    origin = dest;
+    dest=temp;
 }

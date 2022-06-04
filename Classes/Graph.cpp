@@ -18,8 +18,8 @@ string filename(int i){
     return "in" + to_string(i) + ".txt";
 }
 
-Graph::Graph(int fileIndex){
-    this->fileIndex = fileIndex;
+Graph::Graph(int fileNumber){
+    fileIndex = fileNumber;
     readNetwork(fileIndex);
     readStops(); //Iterates through edges vector creating adjacency list for the stops, creates stops vector
 }
@@ -79,16 +79,6 @@ void Graph::addVehicle(int src, int dest, int capacity, int duration) {
 }
 
 // Depth-First Search: example implementation
-void Graph::dfs(int w) {
-    stops[w].setVisited(true) ;
-    for (int i = 0; i < stops[w].getAdj().size(); i++){
-        int u = vehicles[i].getDest();
-        if (stops[w].isVisited())
-            dfs(w);
-    }
-}
-
-// Depth-First Search: example implementation
 void Graph::bfs(int x) {
     for (int v=1; v<=totalStops; v++) stops[v].setVisited(false);
     queue<int> q; // queue of unvisited nodes
@@ -108,7 +98,7 @@ void Graph::bfs(int x) {
     }
 }
 
-int Graph::maximumCapacityWays(int s, int t) {
+int Graph::unsplitGroupFindMaxSize(int s, int t) {
     MaxHeap<int, int> maxHeap = MaxHeap<int, int>(totalStops,-1);
 
     for(int v=1; v <= totalStops; v++){
@@ -140,8 +130,8 @@ int Graph::maximumCapacityWays(int s, int t) {
 }
 
 
-int Graph::minimumTransshipments(int s, int t){
-    if(!existPath(s, t)){
+int Graph::unsplitGroupFindMinTransfers(int s, int t){
+    if(!pathExists(s, t)){
         cerr << "\nDoesn't exist a path from " << s << " to " << t << endl;
         return -1;
     }
@@ -172,26 +162,7 @@ int Graph::minimumTransshipments(int s, int t){
     return stops[t].getDistance()-1;
 }
 
-void Graph::bfsDist(int x){
-    stops[x].setDistance(0);
-    for (int v=1; v<=totalStops; v++) stops[v].setVisited(false);
-    queue<int> q; // queue of unvisited nodes
-    q.push(x);
-    stops[x].setVisited(true);
-    while (!q.empty()) { // while there are still unvisited nodes
-        int u = q.front(); q.pop();
-        for (auto &e : stops[u].getAdj()) {
-            int w = vehicles[e].getDest();
-            if (!stops[w].isVisited()) {
-                q.push(w);
-                stops[w].setVisited(true);
-                stops[w].setDistance(stops[u].getDistance()+1);
-            }
-        }
-    }
-}
-
-bool Graph::existPath(int a, int b) {
+bool Graph::pathExists(int a, int b) {
     bfs(a);
     return stops[b].isVisited();
 }
@@ -201,22 +172,6 @@ int Graph::stopOutwardFlow(int s){
         adder+=vehicles[e].getFlow();
     }
     return adder;
-}
-
-int Graph::getMinDuration(int source, int sink, int people) {
-    fordFulkerson(source, sink, people);
-    int duration = 0;
-
-    for(auto &e : pathFlowDuration){
-        people -= e.first;
-        duration = max(duration, e.second);
-    }
-
-    if(people > 0){
-        cerr << "Unable to join those people together" << endl;
-    }
-
-    return duration;
 }
 
 void Graph::makeResidualGraph(){
@@ -244,7 +199,7 @@ void Graph::makeResidualGraph(){
     }
 }
 
-int Graph::minDuration(int s, int t){
+int Graph::splitGroupFindMinDuration(int s, int t){
     for (int v=1; v<=totalStops; v++) stops[v].setVisited(false);
     for(auto &stop :stops){
         stop.setEarliestArrival(INT32_MAX);
@@ -282,14 +237,14 @@ void Graph::transposeGraph(){
         stops[i].emptyAdj();
     }
     for(int i=0; i<vehicles.size();i++){
-        vehicles[i].invertEdge();
+        vehicles[i].invert();
     }
     for(int i=0; i<vehicles.size();i++){
         stops[vehicles[i].getOrigin()].addVehicle(i);
     }
 }
 
-int Graph::transposedDetermineWaitTimes(int s, int t, vector<int>& waiting_stops){
+int Graph::determineWaitTimes(int s, int t, vector<int>& waiting_stops){
     for (int v=1; v<=totalStops; v++) stops[v].setLatestDeparture(INT32_MAX);
     for (int v=1; v<=totalStops; v++) stops[v].setVisited(false);
     queue<int> q; // queue of unvisited nodes
@@ -328,22 +283,22 @@ int Graph::transposedDetermineWaitTimes(int s, int t, vector<int>& waiting_stops
     return max_wait;
 }
 
-int Graph::determineWaitTimes(int s, int t, vector<int>& waiting_stops){
-    minDuration(s, t);
+int Graph::splitGroupFindWaitTimes(int s, int t, vector<int>& waiting_stops){
+    splitGroupFindMinDuration(s, t);
     waiting_stops.clear();
     Graph transposed = *this;
     transposed.transposeGraph();
-    return transposed.transposedDetermineWaitTimes(s, t, waiting_stops);
+    return transposed.determineWaitTimes(s, t, waiting_stops);
 }
 
-int Graph::fordFulkersonNonZeroFlow(int s, int t, int units){
+int Graph::splitGroupEnlargedGroup(int s, int t, int units){
     int init_flow = stopOutwardFlow(s);
     int max_flow = init_flow;
     // 1. Create the residual graph. (Same as the original graph.)
     Graph residualGraph = *this;
     residualGraph.makeResidualGraph();
     // 2. Keep calling BFS to check for an augmenting path from the source to the sink...
-    while(residualGraph.existPath(s, t)){
+    while(residualGraph.pathExists(s, t)){
         // 3. Find the max flow through the path we just found.
         int path_flow = INT32_MAX;
 
@@ -393,7 +348,7 @@ int Graph::fordFulkersonNonZeroFlow(int s, int t, int units){
         }
         max_flow += path_flow;
         if(max_flow >= init_flow + units){
-            bfsprint(s, init_flow + units);
+            printPath(s, init_flow + units);
             return max_flow;
         }
 
@@ -402,8 +357,7 @@ int Graph::fordFulkersonNonZeroFlow(int s, int t, int units){
     return max_flow;
 }
 
-int Graph::fordFulkerson(int s, int t, int given) {
-    vector<pair<int, int>> paths;
+int Graph::splitGroupFindPath(int s, int t, int given) {
     int max_flow = 0;
     for(int i = 0; i < totalVehicles; i++){
         vehicles[i].setFlow(0);
@@ -412,7 +366,7 @@ int Graph::fordFulkerson(int s, int t, int given) {
     Graph residualGraph = *this;
 
     // 2. Keep calling BFS to check for an augmenting path from the source to the sink...
-    while(residualGraph.existPath(s, t)){
+    while(residualGraph.pathExists(s, t)){
 
         // 3. Find the max flow through the path we just found.
         int path_flow = INT32_MAX;
@@ -435,8 +389,6 @@ int Graph::fordFulkerson(int s, int t, int given) {
             // Setup for the next edge in the path.
             v = u;
         }
-        cout << "path: "<< path_flow <<" " << "duration: " << duration << endl;
-        paths.push_back({path_flow, duration});
         // 4. Update the residual capacities of the edges and reverse edges.
         v = t;
         while(v != s){
@@ -465,17 +417,14 @@ int Graph::fordFulkerson(int s, int t, int given) {
         }
         max_flow += path_flow;
         if(max_flow >= given){
-            this->pathFlowDuration = paths;
-            bfsprint(s, given);
+            printPath(s, given);
             return max_flow;
         }
 
     }
-    this->pathFlowDuration = paths;
-
     if(given == INT32_MAX){
         cout << "----------------------------------------------------------------" << endl;
-        bfsprint(s,given);
+        printPath(s, given);
         cout << "Max flow is: " << max_flow;
         return max_flow;
     }
@@ -483,7 +432,7 @@ int Graph::fordFulkerson(int s, int t, int given) {
     return max_flow;
 }
 
-void Graph::bfsprint(int s, int given){
+void Graph::printPath(int s, int given){
     for (int v=1; v<=totalStops; v++) stops[v].setPeople(0);
     for (int v=1; v<=totalStops; v++) stops[v].setVisited(false);
     queue<int> q; // queue of unvisited nodes
