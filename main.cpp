@@ -7,8 +7,6 @@ int main() {
 
     cout << "Min transshipments: " << g1.minimumTransshipments(1, 4) << endl;
 
-    //g1.fordFulkerson(1, 4, 12);
-
     g1.fordFulkerson(1, 4,12);
 
     cout << g1.minDuration(1,4);

@@ -1,17 +1,8 @@
-//
-// Created by igcbs on 16/01/2022.
-//
-
 #ifndef STOP_EDGE_H
 #define STOP_EDGE_H
 
 #include <string>
 #include <vector>
-
-/*
- *
- *
- * */
 
 using namespace std;
 
@@ -85,4 +76,4 @@ public:
     const int getOrigin() const;
 };
 
-#endif //STOP_EDGE_H
+#endif

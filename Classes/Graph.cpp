@@ -1,6 +1,3 @@
-//
-// Created by 35196 on 24/01/2022.
-//
 #include <iostream>
 #include <fstream>
 #include <string>
@@ -174,10 +171,6 @@ int Graph::minimumTransshipments(int s, int t){
     return stops[t].getDistance()-1;
 }
 
-
-
-// bfs algorithm
-
 void Graph::bfsDist(int x){
     stops[x].setDistance(0);
     for (int v=1; v<=totalStops; v++) stops[v].setVisited(false);
@@ -321,7 +314,6 @@ int Graph::fordFulkersonNonZeroFlow(int s, int t, int units){
                 if(residualGraph.vehicles[e].getDest() == v){
                     residualGraph.vehicles[e].setCapacity(residualGraph.vehicles[e].getCapacity() - path_flow);
                     vehicles[e].setFlow(vehicles[e].getFlow() + path_flow);
-                    //maybe residualGraph?
                 }
             }
             bool hasReverseEdge = false;
@@ -329,8 +321,6 @@ int Graph::fordFulkersonNonZeroFlow(int s, int t, int units){
                 if(residualGraph.vehicles[e].getDest() == u){
                     hasReverseEdge=true;
                     residualGraph.vehicles[e].setCapacity(residualGraph.vehicles[e].getCapacity() + path_flow);
-                    //vehicles[e].setFlow(path_flow);
-                    //maybe residualGraph?
                     break;
                 }
             }
@@ -396,7 +386,6 @@ int Graph::fordFulkerson(int s, int t, int given=INT32_MAX) {
                 if(residualGraph.vehicles[e].getDest() == v){
                     residualGraph.vehicles[e].setCapacity(residualGraph.vehicles[e].getCapacity() - path_flow);
                     vehicles[e].setFlow(vehicles[e].getFlow() + path_flow);
-                    //maybe residualGraph?
                 }
             }
             bool hasReverseEdge = false;
@@ -404,8 +393,6 @@ int Graph::fordFulkerson(int s, int t, int given=INT32_MAX) {
                 if(residualGraph.vehicles[e].getDest() == u){
                     hasReverseEdge=true;
                     residualGraph.vehicles[e].setCapacity(residualGraph.vehicles[e].getCapacity() + path_flow);
-                    //vehicles[e].setFlow(path_flow);
-                    //maybe residualGraph?
                     break;
                 }
             }
@@ -427,6 +414,7 @@ int Graph::fordFulkerson(int s, int t, int given=INT32_MAX) {
     this->pathFlowDuration = paths;
 
     if(given == INT32_MAX){
+        cout << "----------------------------------------------------------------" << endl;
         bfsprint(s,given);
         cout << "Max flow is: " << max_flow;
         return max_flow;
@@ -442,7 +430,9 @@ void Graph::bfsprint(int s, int given){
     q.push(s);
     stops[s].setVisited(true);
     stops[s].setPeople(given);
+    bool printed; // to avoid line spam
     while (!q.empty()) { // while there are still unvisited nodes
+        printed = false;
         int u = q.front(); q.pop();
         for (auto &e : stops[u].getAdj()) {
             int w = vehicles[e].getDest();
@@ -453,13 +443,14 @@ void Graph::bfsprint(int s, int given){
                 stops[u].setPeople(stops[u].getPeople() - peopleSent);
                 stops[w].setPeople(stops[w].getPeople() + peopleSent);
                 stops[w].setVisited(false);
+                printed = true;
             }
             if (!stops[w].isVisited()) {
                 q.push(w);
                 stops[w].setVisited(true);
             }
         }
-        cout << "----------------------------------------------------------------" << endl;
+        if(printed) cout << "----------------------------------------------------------------" << endl;
     }
 }
 
