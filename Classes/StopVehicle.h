@@ -25,6 +25,8 @@ private:
     int pred;
     int maxCapacity;
     int people;
+    int latest_arrival;
+    int earliest_arrival;
 
 public:
     vector<int> getAdj() const;
@@ -49,6 +51,16 @@ public:
     int getPeople();
 
     void setPeople(int people);
+
+    int getLatestArrival() const;
+
+    void setLatestArrival(int latestArrival);
+
+    int getEarliestArrival() const;
+
+    void setEarliestArrival(int earliestArrival);
+
+
 };
 
 class Vehicle{

@@ -50,8 +50,24 @@ void Stop::setPeople(int people){
     Stop::people = people;
 }
 
+int Stop::getLatestArrival() const {
+    return latest_arrival;
+}
 
-    Vehicle::Vehicle(
+void Stop::setLatestArrival(int latestArrival) {
+    latest_arrival = latestArrival;
+}
+
+int Stop::getEarliestArrival() const {
+    return earliest_arrival;
+}
+
+void Stop::setEarliestArrival(int earliestArrival) {
+    earliest_arrival = earliestArrival;
+}
+
+
+Vehicle::Vehicle(
     const int origin,
     const int dest,
     const int capacity,

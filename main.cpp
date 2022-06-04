@@ -11,7 +11,7 @@ int main() {
 
     g1.fordFulkerson(1, 4,12);
 
-    cout << g1.getMinDuration(1,4, 3);
+    cout << g1.minDuration(1,4);
 
     return 0;
 }

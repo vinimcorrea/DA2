@@ -58,11 +58,13 @@ public:
     int fordFulkersonNonZeroFlow(int s, int t, int units); //2.2
     void makeResidualGraph();
 
-    int getMinDuration(int s, int t,int people); // 2.4
+    int getMinDuration(int s, int t,int people);
 
     int stopOutwardFlow(int s);
 
     vector<pair<int, int>> getPath() const;
+
+    int minDuration(int s, int t);//2.4
 };
 
 #endif
