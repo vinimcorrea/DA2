@@ -276,6 +276,39 @@ int Graph::minDuration(int s, int t){
     return(stops[t].getLatestArrival());
 }
 
+int Graph::determineWaitTimes(int s, int t){
+    for (int v=1; v<=totalStops; v++) stops[v].setVisited(false);
+    for(auto &stop :stops){
+        stop.setEarliestArrival(INT32_MAX);
+        stop.setLatestArrival(0);
+    }
+    stops[s].setEarliestArrival(0);
+    stops[s].setLatestArrival(0);
+    stops[s].setVisited(true);
+    queue<int> q; // queue of unvisited nodes
+    q.push(s);
+    while (!q.empty()) { // while there are still unvisited nodes
+        int u = q.front();
+        q.pop();
+        for (auto &e: stops[u].getAdj()) {
+            if(vehicles[e].getFlow() != 0){
+                int w = vehicles[e].getDest();
+                if (stops[w].getEarliestArrival() > stops[u].getLatestArrival() + vehicles[e].getTime()) {
+                    stops[w].setEarliestArrival(stops[u].getLatestArrival() + vehicles[e].getTime());
+                }
+                if (stops[w].getLatestArrival() < stops[u].getLatestArrival() + vehicles[e].getTime()) {
+                    stops[w].setLatestArrival(stops[u].getLatestArrival() + vehicles[e].getTime());
+                }
+                if (!stops[w].isVisited()) {
+                    q.push(w);
+                    stops[w].setVisited(true);
+                }
+            }
+        }
+    }
+    return(stops[t].getLatestArrival());
+}
+
 int Graph::fordFulkersonNonZeroFlow(int s, int t, int units){
     int init_flow = stopOutwardFlow(s);
     int max_flow = init_flow;
@@ -342,7 +375,7 @@ int Graph::fordFulkersonNonZeroFlow(int s, int t, int units){
     return max_flow;
 }
 
-int Graph::fordFulkerson(int s, int t, int given=INT32_MAX) {
+int Graph::fordFulkerson(int s, int t, int given) {
     vector<pair<int, int>> paths;
     int max_flow = 0;
     for(int i = 0; i < totalVehicles; i++){

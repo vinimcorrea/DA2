@@ -18,6 +18,7 @@ private:
     int people;
     int latest_arrival;
     int earliest_arrival;
+    int latest_departure;
 
 public:
     vector<int> getAdj() const;

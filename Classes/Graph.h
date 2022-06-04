@@ -40,12 +40,7 @@ public:
     void bfsDist(int v);
 
     bool existPath(int a, int b);
-
-    int fordFulkerson(int s, int t);
-
     void addVehicle(int src, int dest, int capacity, int duration);
-
-
     int dijkstra_distance (Stop a, Stop b);
     int getIndexStop(string code);
 
@@ -54,9 +49,10 @@ public:
     int setDistance(int s);
     void bfsprint(int s, int given);
 
-    int fordFulkerson(int s, int t, int given); //2.1 & 2.3
+    int fordFulkerson(int s, int t, int given=INT32_MAX); //2.1 & 2.3
     int fordFulkersonNonZeroFlow(int s, int t, int units); //2.2
     void makeResidualGraph();
+    int determineWaitTimes(int s, int t);
 
     int getMinDuration(int s, int t,int people);
 
