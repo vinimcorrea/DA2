@@ -61,6 +61,9 @@ public:
     vector<pair<int, int>> getPath() const;
 
     int minDuration(int s, int t);//2.4
+    void printOne(int t);
+
+    void printOne(int s, int t);
 };
 
 #endif

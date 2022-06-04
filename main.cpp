@@ -14,7 +14,13 @@ void wait(){
 
 int main() {
     while(true) {
-        wait();
+        int gindex;
+        int start;
+        int end;
+        int given;
+        int units;
+        int dummy;
+        //wait();
         cout <<
              "|============================================================================|\n"
              "|     ______ _    __ ____   ______ ____   ___     _   __ _____  ____ ______  |\n"
@@ -24,13 +30,13 @@ int main() {
              "| /_____/   |___//___/    /_/  /_/ |_|/_/  |_|/_/ |_/ /____//___/  /_/       |\n"
              "|                                                                            |\n"
              "|============================================================================|\n"
-             "|      Scenario 1.1                    [11]                                   |\n"
-             "|      Scenario 1.2                    [12]                                   |\n"
-             "|      Scenario 2.1                    [21]                                   |\n"
-             "|      Scenario 2.2                    [22]                                   |\n"
-             "|      Scenario 2.3                    [23]                                   |\n"
-             "|      Scenario 2.4                    [24]                                   |\n"
-             "|      Scenario 2.5                    [25]                                   |\n"
+             "|      Scenario 1.1                    [11]                                  |\n"
+             "|      Scenario 1.2                    [12]                                  |\n"
+             "|      Scenario 2.1                    [21]                                  |\n"
+             "|      Scenario 2.2                    [22]                                  |\n"
+             "|      Scenario 2.3                    [23]                                  |\n"
+             "|      Scenario 2.4                    [24]                                  |\n"
+             "|      Scenario 2.5                    [25]                                  |\n"
              "|      Exit                            [0]                                   |\n"
              "|============================================================================|\n";
 
@@ -39,98 +45,83 @@ int main() {
         int choice;
 
         cin >> choice;
-        if (cin.fail() || cin.peek() != '\n') {
+        if (cin.fail() || cin.peek() != '\n' || (choice != 11 && choice != 12 && choice != 21 && choice != 22 && choice != 23 && choice != 24 && choice != 25 && choice != 0)) {
+            //^ I know I know, dont judge me
             cin.clear();
             cin.ignore(INT_MAX, '\n');
             cout << "Invalid input!" << endl;
+            wait();
             continue;
         }
-        if(choice == 0) {exit(0);}
+        cout << endl;
+        if(choice == 0) {cout << "Goodbye :)"; wait(); exit(0);}
         cout << "Please input the following values:";
         cout << "Graph (1 - 10): " ;
-        int gindex;
         cin >> gindex;
         Graph g1(gindex);
-
-        int start;
-        int end;
-        int given;
-        int units;
-        int dummy;
+        cout << "Starting stop (index): ";
+        cin >> start;
+        cout << "Ending stop (index): " ;
+        cin >> end;
+        cout << endl;
 
         switch (choice)
         {
             case 11:
-                cout << "Starting stop (index): ";
-                cin >> start;
-                cout << "Ending stop (index): " ;
-                cin >> end;
+                cout << endl;
                 given = g1.maximumCapacityWays(start, end);
                 cout << "The max size is " << given << endl;
-                g1.bfsprint(start,given);
+                cout << "The path is:" << endl;
+                g1.printOne(start,end);
                 break;
             case 12:
-                cout << "Starting stop (index): ";
-                cin >> start;
-                cout << "Ending stop (index): " ;
-                cin >> end;
+                cout << endl;
                 given = g1.maximumCapacityWays(start, end);
                 cout << "The max size is " << given << endl;
-                g1.bfsprint(start,given);
+                cout << "The max capacity path is:" << endl;
+                g1.printOne(start,end);
+                cout << endl; // split
                 given = g1.minimumTransshipments(start, end);
-                g1.bfsprint(start,given);
+                if(given > 0) {
+                    cout << "The necessary size is " << given << endl;
+                    cout << "The minimum transshipments path is:" << endl;
+                    g1.printOne(start, end);
+                    break;
+                }
+                cout << "No alternative path" << endl;
                 break;
-
             case 21:
-                cout << "Starting stop (index): ";
-                cin >> start;
-                cout << "Ending stop (index): " ;
-                cin >> end;
                 cout << "Group size: " ;
                 cin >> given;
+                cout << endl;
                 g1.fordFulkerson(start, end, given);
+                cout << endl;
                 break;
             case 22:
-                cout << "Starting stop (index): ";
-                cin >> start;
-                cout << "Ending stop (index): " ;
-                cin >> end;
                 cout << "Group size: " ;
                 cin >> given;
                 cout << "Units to increase: " ;
                 cin >> units;
+                cout << endl;
                 cout << "Previous path: " << endl;
                 g1.fordFulkerson(start, end, given);
+                cout << endl;
                 cout << "Corrected path: " << endl;
                 g1.fordFulkersonNonZeroFlow(start, end, units);
+                cout << endl;
                 break;
             case 23:
-                cout << "Starting stop (index): ";
-                cin >> start;
-                cout << "Ending stop (index): " ;
-                cin >> end;
+                cout << endl;
                 dummy = g1.fordFulkerson(start, end);
                 cout << "Max size: " << dummy << endl;
+                cout << endl;
                 break;
             case 24:
-                cout << "Starting stop (index): ";
-                cin >> start;
-                cout << "Ending stop (index): " ;
-                cin >> end;
-                cout << "Group size: " ;
-                cin >> given;
-                cout << "Units to increase: " ;
-                cin >> units;
-                cout << "Previous path: " << endl;
-                g1.fordFulkerson(start, end, given);
-                cout << "Corrected path: " << endl;
-                g1.fordFulkersonNonZeroFlow(start, end, units);
+                cout << "The rendezvous stop is (index): " << g1.minDuration(start, end) << endl;
+                cout << endl;
+                g1.minDuration(start, end);
                 break;
             case 25:
-                cout << "Starting stop (index): ";
-                cin >> start;
-                cout << "Ending stop (index): " ;
-                cin >> end;
                 cout << "Group size: " ;
                 cin >> given;
                 cout << "Units to increase: " ;
@@ -141,5 +132,7 @@ int main() {
                 g1.fordFulkersonNonZeroFlow(start, end, units);
                 break;
         }
+        wait();
+        wait();
     }
 }
