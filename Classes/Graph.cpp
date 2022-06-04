@@ -2,6 +2,7 @@
 #include <fstream>
 #include <string>
 #include <queue>
+#include <stack>
 
 #include "Graph.h"
 
@@ -513,32 +514,18 @@ void Graph::bfsprint(int s, int given){
     }
 }
 
-//dijkstra algorithm
-/*
-int Graph::dijkstra_distance(Stop a, Stop b) {
-    if (a==b) return 0;
-    for(int i = 1; i <= n; i++) {
-        stops[i].setDistance(INT_MAX);
-        stops[i].setVisited(false);
+void Graph::printOne(int s, int t){
+    stack<int> path;
+    path.push(t);
+    int current = t;
+    while(current != s){
+        current = stops[current].getPred();
+        path.push(current);
     }
-    a.setDistance(0);
-    MinHeap<string,int> q(n,NULL);
-    for (int i = 1; i<=n;i++){
-        q.insert(stops[i].getCode(),stops[i].getDistance());
+    //cout << "The path is:" << endl;
+    while(!path.empty()){
+        cout << path.top() << " ";
+        path.pop();
     }
-    while (q.getSize()!=0){
-        string u = q.removeMin();
-        int x= getIndexStop(u);
-        stops[x].setVisited(true);
-        for (auto & edge : stops[x].getAdj()){
-            if ( (stops[x].getDistance() + edge.getWeight() < edge.getDest().getDistance()) && q.hasKey(edge.getDest().getCode())  ){
-                stops[getIndexStop(edge.getDest().getCode())].setDistance(stops[x].getDistance()+edge.getWeight());
-                q.decreaseKey(edge.getDest().getCode(),stops[getIndexStop(edge.getDest().getCode())].getDistance());
-            }
-        }
-
-    }
-    if (b.getDistance()==INT_MAX) return -1;
-    return b.getDistance();
+    cout << endl;
 }
-*/

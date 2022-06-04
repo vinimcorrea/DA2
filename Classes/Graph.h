@@ -52,7 +52,7 @@ public:
     int fordFulkerson(int s, int t, int given=INT32_MAX); //2.1 & 2.3
     int fordFulkersonNonZeroFlow(int s, int t, int units); //2.2
     void makeResidualGraph();
-    int determineWaitTimes(int s, int t, vector<int>& waiting_stops);
+    int determineWaitTimes(int s, int t, vector<int>& waiting_stops);//2.5
     int transposedDetermineWaitTimes(int s, int t, vector<int>& waiting_stops);
 
     int getMinDuration(int s, int t,int people);
@@ -64,6 +64,8 @@ public:
     int minDuration(int s, int t);//2.4
 
     void transposeGraph();
+
+    void printOne(int s, int t);
 };
 
 #endif
