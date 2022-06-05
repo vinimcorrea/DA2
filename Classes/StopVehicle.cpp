@@ -69,27 +69,6 @@ void Stop::setEarliestArrival(int earliestArrival) {
     earliest_arrival = earliestArrival;
 }
 
-void Stop::emptyAdj() {
-    adj.clear();
-}
-
-int Stop::getLatestDeparture() const {
-    return latest_departure;
-}
-
-void Stop::setLatestDeparture(int latestDeparture) {
-    latest_departure = latestDeparture;
-}
-
-int Stop::getMaxWait() const {
-    return max_wait;
-}
-
-void Stop::setMaxWait(int maxWait) {
-    max_wait = maxWait;
-}
-
-
 Vehicle::Vehicle(int origin,int dest,int capacity,int time) : origin(origin), dest(dest),capacity(capacity), time(time){}
 
 int Vehicle::getOrigin() const {
@@ -114,10 +93,4 @@ void Vehicle::setFlow(int flow) {
 
 void Vehicle::setCapacity(int capacity) {
     Vehicle::capacity = capacity;
-}
-
-void Vehicle::invert(){
-    int temp = origin;
-    origin = dest;
-    dest=temp;
 }

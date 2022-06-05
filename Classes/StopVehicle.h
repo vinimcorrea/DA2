@@ -18,8 +18,6 @@ private:
     int people;
     int latest_arrival;
     int earliest_arrival;
-    int latest_departure;
-    int max_wait;
 
 public:
     vector<int> getAdj() const;
@@ -30,8 +28,6 @@ public:
     int getPeople() const;
     int getLatestArrival() const;
     int getEarliestArrival() const;
-    int getLatestDeparture() const;
-    int getMaxWait() const;
 
     void setAdj(const vector<int> &adj);
     void setVisited(bool visited);
@@ -41,11 +37,8 @@ public:
     void setPeople(int people);
     void setLatestArrival(int latestArrival);
     void setEarliestArrival(int earliestArrival);
-    void setLatestDeparture(int latestDeparture);
-    void setMaxWait(int maxWait);
 
     void addVehicle(int vehicle);
-    void emptyAdj();
 };
 
 class Vehicle{
@@ -65,8 +58,6 @@ public:
 
     void setFlow(int flow);
     void setCapacity(int capacity);
-
-    void invert();
 };
 
 #endif

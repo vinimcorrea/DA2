@@ -166,6 +166,7 @@ bool Graph::pathExists(int a, int b) {
     bfs(a);
     return stops[b].isVisited();
 }
+
 int Graph::stopOutwardFlow(int s){
     int adder=0;
     for(auto e : stops[s].getAdj()){
@@ -216,11 +217,13 @@ int Graph::splitGroupFindMinDuration(int s, int t){
         for (auto &e: stops[u].getAdj()) {
             if(vehicles[e].getFlow() != 0){
                 int w = vehicles[e].getDest();
-                if (stops[w].getEarliestArrival() > stops[u].getLatestArrival() + vehicles[e].getTime()) {
+                if (stops[w].getEarliestArrival() > stops[u].getEarliestArrival() + vehicles[e].getTime()) {
                     stops[w].setEarliestArrival(stops[u].getLatestArrival() + vehicles[e].getTime());
+                    stops[w].setVisited(false);
                 }
                 if (stops[w].getLatestArrival() < stops[u].getLatestArrival() + vehicles[e].getTime()) {
                     stops[w].setLatestArrival(stops[u].getLatestArrival() + vehicles[e].getTime());
+                    stops[w].setVisited(false);
                 }
                 if (!stops[w].isVisited()) {
                     q.push(w);
@@ -232,33 +235,29 @@ int Graph::splitGroupFindMinDuration(int s, int t){
     return(stops[t].getLatestArrival());
 }
 
-void Graph::transposeGraph(){
-    for(int i=1; i<stops.size();i++){
-        stops[i].emptyAdj();
-    }
-    for(int i=0; i<vehicles.size();i++){
-        vehicles[i].invert();
-    }
-    for(int i=0; i<vehicles.size();i++){
-        stops[vehicles[i].getOrigin()].addVehicle(i);
-    }
-}
-
-int Graph::determineWaitTimes(int s, int t, vector<int>& waiting_stops){
-    for (int v=1; v<=totalStops; v++) stops[v].setLatestDeparture(INT32_MAX);
+int Graph::splitGroupFindWaitTimes(int s, int t, vector<int>& waiting_stops){
     for (int v=1; v<=totalStops; v++) stops[v].setVisited(false);
+    for(auto &stop :stops){
+        stop.setEarliestArrival(INT32_MAX);
+        stop.setLatestArrival(0);
+    }
+    stops[s].setEarliestArrival(0);
+    stops[s].setLatestArrival(0);
+    stops[s].setVisited(true);
     queue<int> q; // queue of unvisited nodes
-    q.push(t);
-    stops[t].setVisited(true);
-    stops[t].setLatestDeparture(stops[t].getLatestArrival());
+    q.push(s);
     while (!q.empty()) { // while there are still unvisited nodes
         int u = q.front();
         q.pop();
         for (auto &e: stops[u].getAdj()) {
-            if (vehicles[e].getFlow() != 0) {
+            if(vehicles[e].getFlow() != 0){
                 int w = vehicles[e].getDest();
-                if (stops[w].getLatestDeparture() > stops[u].getLatestDeparture() - vehicles[e].getTime()) {
-                    stops[w].setLatestDeparture(stops[u].getLatestDeparture() - vehicles[e].getTime());
+                if (stops[w].getEarliestArrival() > stops[u].getLatestArrival() + vehicles[e].getTime()) {
+                    stops[w].setEarliestArrival(stops[u].getLatestArrival() + vehicles[e].getTime());
+                    stops[w].setVisited(false);
+                }
+                if (stops[w].getLatestArrival() < stops[u].getLatestArrival() + vehicles[e].getTime()) {
+                    stops[w].setLatestArrival(stops[u].getLatestArrival() + vehicles[e].getTime());
                     stops[w].setVisited(false);
                 }
                 if (!stops[w].isVisited()) {
@@ -268,27 +267,19 @@ int Graph::determineWaitTimes(int s, int t, vector<int>& waiting_stops){
             }
         }
     }
-    int max_wait = 0;
-    for(int i=1; i<stops.size();i++){
-        stops[i].setMaxWait(stops[i].getLatestDeparture() - stops[i].getEarliestArrival());
-        if(stops[i].getMaxWait() > max_wait){
-            max_wait = stops[i].getMaxWait();
+    int maxWaitTime=0;
+    for (int v=1; v<=totalStops; v++) {
+        int waitTime = stops[v].getLatestArrival() - stops[v].getEarliestArrival();
+        if(waitTime > maxWaitTime){
+            maxWaitTime = waitTime;
         }
     }
-    for(int i=1; i<stops.size();i++){
-        if(stops[i].getMaxWait() == max_wait){
-            waiting_stops.push_back(i);
+    for (int v=1; v<=totalStops; v++) {
+        if(stops[v].getLatestArrival() - stops[v].getEarliestArrival() == maxWaitTime){
+            waiting_stops.push_back(v);
         }
     }
-    return max_wait;
-}
-
-int Graph::splitGroupFindWaitTimes(int s, int t, vector<int>& waiting_stops){
-    splitGroupFindMinDuration(s, t);
-    waiting_stops.clear();
-    Graph transposed = *this;
-    transposed.transposeGraph();
-    return transposed.determineWaitTimes(s, t, waiting_stops);
+    return maxWaitTime;
 }
 
 int Graph::splitGroupEnlargedGroup(int s, int t, int units){
