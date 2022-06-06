@@ -192,7 +192,6 @@ void Graph::makeResidualGraph(){
                 }
                 if(!oppositeEdgeExists){
                     addVehicle(dest, i, flow, 0);
-                    //TODO: Change Duration from 0
                 }
             }
 
@@ -332,7 +331,6 @@ int Graph::splitGroupEnlargedGroup(int s, int t, int units){
             }
             if(!hasReverseEdge){
                 residualGraph.addVehicle(v, u, path_flow, 0);
-                //TODO: Change Time from 0
             }
             // Setup for the next edge in the path.
             v = u;
@@ -401,7 +399,6 @@ int Graph::splitGroupFindPath(int s, int t, int given) {
             }
             if(!hasReverseEdge){
                 residualGraph.addVehicle(v, u, path_flow, 0);
-                //TODO: Change Time from 0
             }
             // Setup for the next edge in the path.
             v = u;
@@ -414,9 +411,7 @@ int Graph::splitGroupFindPath(int s, int t, int given) {
 
     }
     if(given == INT32_MAX){
-        cout << "----------------------------------------------------------------" << endl;
         printPath(s, given);
-        cout << "Max flow is: " << max_flow;
         return max_flow;
     }
     cout << "Could not find a path for the group, the max flow is: " << max_flow;
@@ -439,7 +434,7 @@ void Graph::printPath(int s, int given){
             if(vehicles[e].getFlow() > 0 && stops[u].getPeople() > 0){
                 int peopleSent = min(vehicles[e].getFlow(), stops[u].getPeople());
                 cout << "From: " << vehicles[e].getOrigin() << " To: " << vehicles[e].getDest()
-                     << " Quantity: " << peopleSent << endl;
+                     << " Flow: " << peopleSent << endl;
                 stops[u].setPeople(stops[u].getPeople() - peopleSent);
                 stops[w].setPeople(stops[w].getPeople() + peopleSent);
                 stops[w].setVisited(false);
@@ -450,7 +445,7 @@ void Graph::printPath(int s, int given){
                 stops[w].setVisited(true);
             }
         }
-        if(printed) cout << "----------------------------------------------------------------" << endl;
+        if(printed) cout << "------------------------------" << endl;
     }
 }
 
@@ -462,10 +457,11 @@ void Graph::printOne(int s, int t){
         current = stops[current].getPred();
         path.push(current);
     }
-    //cout << "The path is:" << endl;
-    while(!path.empty()){
-        cout << path.top() << " ";
+    while(path.size() > 1){
+        cout << path.top() << ", ";
         path.pop();
     }
+    cout << path.top();
+    path.pop();
     cout << endl;
 }

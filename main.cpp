@@ -63,47 +63,50 @@ int main() {
         cin >> start;
         cout << "Ending stop (index): " ;
         cin >> end;
-        cout << endl;
 
         switch (choice)
         {
             case 11:
                 cout << endl;
                 given = g1.unsplitGroupFindMaxSize(start, end);
-                cout << "The max size is " << given << endl;
-                cout << "The path is:" << endl;
+                cout << "The max group size is: " << given << endl;
+                cout << "The path is: ";
                 g1.printOne(start,end);
+                cout << endl;
                 break;
             case 12:
                 cout << endl;
                 given = g1.unsplitGroupFindMaxSize(start, end);
-                cout << "The max size is " << given << endl;
-                cout << "The max capacity path is:" << endl;
+                cout << "The max group size is: " << given << endl;
+                cout << "The max capacity path is: ";
                 g1.printOne(start,end);
-                cout << endl; // split
+                cout << endl;
                 given = g1.unsplitGroupFindMinTransfers(start, end);
                 if(given > 0) {
-                    cout << "The necessary size is " << given << endl;
-                    cout << "The minimum transshipments path is:" << endl;
+                    cout << "The necessary size is: " << given << endl;
+                    cout << "The minimum transfers path is: ";
                     g1.printOne(start, end);
+                    cout << endl;
                     break;
                 }
                 cout << "No alternative path" << endl;
+                cout << endl;
                 break;
             case 21:
                 cout << "Group size: " ;
                 cin >> given;
                 cout << endl;
+                cout << "Path: " << endl;
                 g1.splitGroupFindPath(start, end, given);
                 cout << endl;
                 break;
             case 22:
                 cout << "Group size: " ;
                 cin >> given;
-                cout << "Units to increase: " ;
+                    cout << "Increase by: " ;
                 cin >> units;
                 cout << endl;
-                cout << "Previous path: " << endl;
+                cout << "Initial path: " << endl;
                 g1.splitGroupFindPath(start, end, given);
                 cout << endl;
                 cout << "Corrected path: " << endl;
@@ -112,26 +115,41 @@ int main() {
                 break;
             case 23:
                 cout << endl;
+                cout << "Path: " << endl;
                 dummy = g1.splitGroupFindPath(start, end);
-                cout << "Max size: " << dummy << endl;
+                cout << endl;
+                cout << "Max Group Size: " << dummy << endl;
                 cout << endl;
                 break;
             case 24:
-                cout << "The rendezvous stop is (index): " << g1.splitGroupFindMinDuration(start, end) << endl;
+                cout << "Group size: " ;
+                cin >> given;
                 cout << endl;
-                g1.splitGroupFindMinDuration(start, end);
+                cout << "Path: " << endl;
+                g1.splitGroupFindPath(start, end, given);
+                cout << endl;
+                cout << "The group will meet again after " << g1.splitGroupFindMinDuration(start, end) << " units of time" << endl;
+                cout << endl;
                 break;
             case 25:
                 cout << "Group size: " ;
                 cin >> given;
-                cout << "Corrected path: " << endl;
+                cout << endl;
+                cout << "Path: " << endl;
                 g1.splitGroupFindPath(start, end, given);
                 vector<int> waiting_stops;
-                cout << g1.splitGroupFindWaitTimes(start, end, waiting_stops);
+                cout << endl;
+                cout << "Max Wait Time: " << g1.splitGroupFindWaitTimes(start, end, waiting_stops) << endl;
+                cout << "At stops: ";
+                int i;
+                for(i=0; i<waiting_stops.size()-1; i++){
+                    cout << waiting_stops[i] << ", ";
+                }
+                cout << waiting_stops[i] << endl;
+                cout << endl;
                 break;
         }
         wait();
         wait();
-
     }
 }
