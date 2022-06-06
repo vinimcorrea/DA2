@@ -416,7 +416,7 @@ int Graph::splitGroupFindPath(int s, int t, int given) {
     if(given == INT32_MAX){
         cout << "----------------------------------------------------------------" << endl;
         printPath(s, given);
-        cout << "Max flow is: " << max_flow;
+        //cout << "Max flow is: " << max_flow;
         return max_flow;
     }
     cout << "Could not find a path for the group, the max flow is: " << max_flow;

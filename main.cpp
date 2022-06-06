@@ -127,7 +127,7 @@ int main() {
                 cout << "Corrected path: " << endl;
                 g1.splitGroupFindPath(start, end, given);
                 vector<int> waiting_stops;
-                cout << g1.splitGroupFindWaitTimes(start, end, waiting_stops);
+                cout << "Max time: " << g1.splitGroupFindWaitTimes(start, end, waiting_stops) << endl;
                 break;
         }
         wait();
